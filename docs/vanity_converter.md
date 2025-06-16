@@ -2,34 +2,40 @@ TTEC DIGITAL ASSIGNMENT
 
 1. Overview:
 
-Given a phone number, this module attempts to transform it into one or more possible vanity number representations with respect to the standard phone keypad: it generates letter combinations that fit the given numeric input and then chooses the best ones according to some fixed criteria.
+Given a phone number, this module attempts to transform it into one or more possible vanity number representations using the standard phone keypad. It generates letter combinations that correspond to the numeric input and selects the best ones based on fixed criteria.
 
-As for now, it all works locally and could be tested as a standalone Python script. Future steps are definitely a Lambda-DynamoDB integration.
+Currently, everything works locally and can be tested as a standalone Python script. Future steps include integrating it with AWS Lambda and DynamoDB.
 
 2. How it works
 
-First, I did a phone keypad mapping for each digit to a set of possible letters. For example, 2 -> ABC. Second, this script is based on generating all possible letter combinations for a given phone number. Lastly, for now without a connection of aws I had to do the first n combinations labeled as the “best”. Upon connecting aws, i will use the english dictionary to prioritize valid words.
+First, I created a phone keypad mapping from each digit to its corresponding letters (e.g., 2 → ABC). The script then generates all possible letter combinations for a given phone number.
+
+Since AWS integration is not yet functional, the script currently returns the first n combinations labeled as the “best.” Once AWS is connected, I plan to use an English dictionary to prioritize combinations that form valid words.
 
 3. File Structure
 
-For now, I just have my script in vanity_numbers.py.
+At the moment, the script is contained in a single file: vanity_numbers.py.
 
 4. How to run the code
 
-For now, just “python vanity_numbers.py”
+Simply run the script using: python vanity_numbers.py
 
 5. Implementation notes
 
-Pick_best is just a placeholder but in the future it should match words in an English dictionary . I use "itertools".product to generate combinations.
+The pick_best() function is currently semi-functional, as it depends on AWS connectivity for full functionality. I use itertools.product to generate the combinations.
 
 6. Challenges so far
 
-Aws connection is hard due to my bank blocking aws payment so i cant connect to aws yet.
+The main issue has been connecting to AWS. My bank is blocking payments to AWS, so my account setup hasn’t been completed yet.
 
 7. Next steps
 
-Connect Aws.
-Integrate my code with aws lambda function
-Store results in dynamoDB
-Make the lambda callable from amazon connect flow
-Improve pick_best() with real word detection
+Resolve AWS account/payment issue
+
+Integrate code with an AWS Lambda function
+
+Store results in DynamoDB
+
+Make the Lambda function callable from an Amazon Connect flow
+
+Enhance pick_best() with real-word detection using an English dictionary
