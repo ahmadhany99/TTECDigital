@@ -1,6 +1,6 @@
 # Vanity Number Converter
 
-This project was built to convert regular phone numbers into creative, meaningful "vanity numbers" — like turning **74663** into **SHOOD** — using AWS services.
+This project was built to convert regular phone numbers into creative, meaningful "vanity numbers" — like turning **74663** into **PHONE** — using AWS services.
 
 It’s part of a serverless solution that uses **AWS Lambda**, **DynamoDB**, and (eventually) **Amazon Connect**, where a caller can dial a number and hear vanity suggestions spoken back to them.
 
@@ -31,8 +31,8 @@ When someone calls in or sends a phone number:
 ## 🔁 Example
 
 **Input phone number:** `74663`  
-**Top result might be:** `"SHOOD"`  
-**Matched words:** `["SHO"]`
+**Top result might be:** `"PHONE"`  
+**Matched words:** `["PHONE"]`
 
 ---
 
@@ -68,16 +68,3 @@ vanity_numbers.lambda_handler
 - **DynamoDB**: Stores each caller's number and results
 - **Amazon Connect** (in progress): Will read out top 3 suggestions
 
-## AWS Integration Overview
-
-### Lambda Execution
-
-![Lambda Function](screenshots/lambda_screenshot.png)
-
-### DynamoDB Records
-
-![DynamoDB Items](screenshots/dynamodb_table_items.png)
-
-### Test Event
-
-![Lambda Test Event](screenshots/test_event.png)
