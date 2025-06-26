@@ -31,8 +31,8 @@ When someone calls in or sends a phone number:
 ## 🔁 Example
 
 **Input phone number:** `74663`  
-**Top result might be:** `"SHOOD"`  
-**Matched words:** `["SHO"]`
+**Top result might be:** `"PHONE"`  
+**Matched words:** `["PHONE"]`
 
 ---
 
