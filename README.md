@@ -68,16 +68,3 @@ vanity_numbers.lambda_handler
 - **DynamoDB**: Stores each caller's number and results
 - **Amazon Connect** (in progress): Will read out top 3 suggestions
 
-## AWS Integration Overview
-
-### Lambda Execution
-
-![Lambda Function](screenshots/lambda_screenshot.png)
-
-### DynamoDB Records
-
-![DynamoDB Items](screenshots/dynamodb_table_items.png)
-
-### Test Event
-
-![Lambda Test Event](screenshots/test_event.png)
