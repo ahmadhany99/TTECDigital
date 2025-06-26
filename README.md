@@ -1,6 +1,6 @@
 # Vanity Number Converter
 
-This project was built to convert regular phone numbers into creative, meaningful "vanity numbers" — like turning **74663** into **SHOOD** — using AWS services.
+This project was built to convert regular phone numbers into creative, meaningful "vanity numbers" — like turning **74663** into **PHONE** — using AWS services.
 
 It’s part of a serverless solution that uses **AWS Lambda**, **DynamoDB**, and (eventually) **Amazon Connect**, where a caller can dial a number and hear vanity suggestions spoken back to them.
 
