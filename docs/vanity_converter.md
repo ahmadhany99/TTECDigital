@@ -45,3 +45,27 @@ Debugging Lambda’s output formatting and boto3 JSON structure was tricky but f
 Hook Lambda into an Amazon Connect flow so users can say a number and hear back the best vanity options
 
 Improve result formatting on the voice side
+
+7. Why I designed it this way
+
+As I mentioned earlier, the first step was to develop a prototype locally; something extremely minimalistic but functional enough for the creator to test the basic conversion logic and scoring mechanisms. The actual function was soon wrapped as a Lambda and integrated with DynamoDb for storage. I had chosen this because of its nature and because this way, I could easily test individual components before stacking all the AWS integrations.
+
+8. What I did as shortcuts (and wouldn't do in production)
+
+In the script, I used a dictionary file imported it from github and the phone number input.
+
+There is no retry or failure handling implemented in the Lambda function.
+
+There's no integration of API Gateway; currently, the Lambda function gets invoked manually.
+
+IAM roles are a bit too permissive for easy development.
+
+9. If only I had more time...
+
+Link the Lambda function up to Amazon Connect with a functioning phone line and contact flow.
+
+More robust error handling and logging.
+
+Further clean up of output formatting.
+
+Maybe a simple front end and/or CLI tool for actually entering numbers interactively.
