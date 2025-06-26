@@ -1,5 +1,7 @@
 import itertools
-
+import json
+import boto3
+from datetime import datetime
 # Define the mapping of digits to letters on a phone keypad
 KEYPAD = {
     '2': 'ABC',
@@ -86,29 +88,70 @@ def pick_best(words,dictionary,top_n=5):
             'score':score,
             'matched_words': matches
         })
-
-            
-
+ 
     return top_results
 
 if __name__ == "__main__":
     # Define the input phone number
     phone_number = "74663"
-    print(f"Input phone number: {phone_number}")
+    print(f"\nInput phone number: {phone_number}")
 
     # Load the dictionary
     dictionary=load_dic()
     try:
         # Generate word combinations from the phone number
         words = phone_to_letters(phone_number)
-        print(f"Generated {len(words)} combinations")
+        print(f"\nGenerated {len(words)} combinations")
 
         # Pick the best word combinations
         best = pick_best(words, dictionary ,top_n=5)
-        print("Top 5 vanity options:")
-        # Print the top vanity options
-        for result in best:
-            print(f"{result['combo']}  → score: {result['score']}  → matches: {result['matched_words']}")
+        print("\nTop 5 Vanity Options:\n")
+        for idx, result in enumerate(best):
+            combo = result['combo'].upper()
+            score = result['score']
+            matches = ', '.join(result['matched_words']) if result['matched_words'] else 'None'
+            print(f"{idx + 1}. {combo:<10} Score: {score}")
+            print(f"   Matched words: {matches}\n")
     except ValueError as error:
         # Handle value errors
         print(f"Error: {error}")
+
+
+def lambda_handler(event, context):
+    # Extract the phone number from the event
+    phone_number = event['phone_number']
+    if not phone_number:
+        return {
+            'statusCode': 400,
+            'body': json.dumps({"error": "Missing Phone number"})
+        }
+    try:
+        # Convert the phone number into possible letter combinations
+        words = phone_to_letters(phone_number)
+
+        # Load the dictionary of words
+        dictionary = load_dic("20k.txt")
+
+        # Pick the best word combinations from the list of words
+        best_words = pick_best(words, dictionary)
+
+        dynamodb = boto3.resource('dynamodb')
+        table=dynamodb.Table('VanityCalls')
+        table.put_item(
+            Item={
+                'caller_number': phone_number,
+                'timestamp': datetime.now().isoformat(),
+                'top_results': best_words
+            }
+        )
+        print("Saved to DynamoDB:", phone_number)
+    # Return the best word combinations as a JSON response
+        return {
+            'statusCode': 200,
+            'body': json.dumps({"results":best_words})
+    }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({"error": str(e)})
+        }

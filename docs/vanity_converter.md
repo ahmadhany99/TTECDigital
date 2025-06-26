@@ -2,40 +2,46 @@ TTEC DIGITAL ASSIGNMENT
 
 1. Overview:
 
-Given a phone number, this module attempts to transform it into one or more possible vanity number representations using the standard phone keypad. It generates letter combinations that correspond to the numeric input and selects the best ones based on fixed criteria.
+This project takes a phone number and turns it into potential vanity words using a standard phone keypad layout (like 74663 → PHONE). The script generates all valid letter combinations for the digits, scores them based on real dictionary matches, and shows the top results.
 
-Currently, everything works locally and can be tested as a standalone Python script. Future steps include integrating it with AWS Lambda and DynamoDB.
+Everything runs locally for now and works as a standalone Python script. I’ve also integrated it with AWS Lambda and DynamoDB, and everything is now running smoothly on the cloud.
 
 2. How it works
 
-First, I created a phone keypad mapping from each digit to its corresponding letters (e.g., 2 → ABC). The script then generates all possible letter combinations for a given phone number.
+I built a keypad dictionary mapping digits to letters (2 → ABC, etc.).
 
-Since AWS integration is not yet functional, the script currently returns the first n combinations labeled as the “best.” Once AWS is connected, I plan to use an English dictionary to prioritize combinations that form valid words.
+The script takes the input number, finds all possible letter combos, and filters out the top-scoring ones based on matches with real English words.
+
+AWS Lambda now handles the backend logic, and the best results are automatically logged in a DynamoDB table called VanityCalls.
 
 3. File Structure
 
-At the moment, the script is contained in a single file: vanity_numbers.py.
+vanity_numbers.py: Main script (used both locally and deployed to Lambda)
+
+20k.txt: Word list (used for matching and scoring)
+
+README.md and vanity_converter.md: Docs like this one
 
 4. How to run the code
 
 Simply run the script using: python vanity_numbers.py
 
-5. Implementation notes
+5. AWS Deployment
 
-The pick_best() function is currently semi-functional, as it depends on AWS connectivity for full functionality. I use itertools.product to generate the combinations.
+The same script is deployed as a Lambda function using Python 3.12
 
-6. Challenges so far
+The function is tested using manual event input ({"phone_number": "74663"}) through the Lambda console
 
-The main issue has been connecting to AWS. My bank is blocking payments to AWS, so my account setup hasn’t been completed yet.
+Results are stored in DynamoDB (VanityCalls table) with timestamp and full result object
 
-7. Next steps
+6. Challenges faced
 
-Resolve AWS account/payment issue
+Initially had issues creating my AWS account (bank blocks AWS charges)
 
-Integrate code with an AWS Lambda function
+Also ran into a few formatting problems while cleaning up the Lambda output and DynamoDB record insertion
 
-Store results in DynamoDB
+Debugging Lambda’s output formatting and boto3 JSON structure was tricky but fixed 7. Next steps
 
-Make the Lambda function callable from an Amazon Connect flow
+Hook Lambda into an Amazon Connect flow so users can say a number and hear back the best vanity options
 
-Enhance pick_best() with real-word detection using an English dictionary
+Improve result formatting on the voice side
