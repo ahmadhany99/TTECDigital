@@ -133,7 +133,9 @@ def lambda_handler(event, context):
         dictionary = load_dic("20k.txt")
 
         # Pick the best word combinations from the list of words
-        best_words = pick_best(words, dictionary)
+        best_words = pick_best(words, dictionary,top_n=3)
+
+        results = [entry['combo'] for entry in best_words]# made it look better for the amazon connect flow 
 
         dynamodb = boto3.resource('dynamodb')
         table=dynamodb.Table('VanityCalls')
@@ -148,7 +150,7 @@ def lambda_handler(event, context):
     # Return the best word combinations as a JSON response
         return {
             'statusCode': 200,
-            'body': json.dumps({"results":best_words})
+            'body': json.dumps({"results":results}) 
     }
     except Exception as e:
         return {
